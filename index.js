@@ -47,3 +47,4 @@ app.post("/bitacoras",async(req,res)=>{
 
     }
 })
+module.exports = app;
