@@ -25,27 +25,41 @@ app.listen(port, () => {
 })
 app.get("/", (req, res) => res.send("Express on Vercel"));
 
-const Bitacora=require("./models/bitacora")
-app.get("/bitacoras",async(req,res)=>{
-    try{
-        const existingBitacora=await Bitacora.find()
+const Bitacora = require("./models/bitacora")
+app.get("/bitacoras", async (req, res) => {
+    try {
+
+        const existingBitacora = await Bitacora.find()
         res.json(existingBitacora)
     }
-    catch{
+    catch {
 
     }
 })
-app.post("/bitacoras",async(req,res)=>{
-    try{
-        const {name}=req.body
-        const saveBit=new Bitacora({
-            name:"SAPO"
+const generateNumBitacora = async () => {
+    try {
+        await Bitacora.findOne({}, {}, { sort: { 'created_at': -1 } }, function (err, bit) {
+            console.log(bit);
+
+        });
+
+    }
+    catch {
+
+    }
+}
+app.post("/bitacoras", async (req, res) => {
+    try {
+        const { cliente } = req.body
+        const saveBit = new Bitacora({
+            nroBitacora:'20',
+            cliente: cliente
         })
         await saveBit.save()
-      
+
         res.json(saveBit)
     }
-    catch{
+    catch {
 
     }
 })
