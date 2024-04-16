@@ -23,38 +23,37 @@ mongose.connect("mongodb+srv://sebas:S8SqVZfVZUJlJOZx@cluster0.yjcnpdr.mongodb.n
 app.listen(port, () => {
     console.log("server is running")
 })
-app.get("/", (req, res) => res.send("Express on Vercel"));
 
 const Bitacora = require("./models/bitacora")
 app.get("/bitacoras", async (req, res) => {
     try {
+        await generateNumBitacora()
 
-        const existingBitacora = await Bitacora.find()
-        res.json(existingBitacora)
-    }
-    catch {
+        const existingBitacora = await Bitacora.find().sort({nroBitacora:-1})
+            .limit(600);
 
+
+        res.json(
+            existingBitacora
+        );
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Error fetching bitacoras" });
     }
 })
 const generateNumBitacora = async () => {
-    try {
-        await Bitacora.findOne({}, {}, { sort: { 'created_at': -1 } }, function (err, bit) {
-            console.log(bit);
-
-        });
-
-    }
-    catch {
-
-    }
+    console.log("GENERANDO")
+    const bi =await Bitacora.find({}).sort({_id: -1}).limit(1)
+    return parseInt(bi[0].nroBitacora)+1
 }
 app.post("/bitacoras", async (req, res) => {
     try {
         const { cliente } = req.body
         const saveBit = new Bitacora({
-            nroBitacora:'20',
+            nroBitacora: await generateNumBitacora(),
             cliente: cliente
         })
+        console.log(saveBit)
         await saveBit.save()
 
         res.json(saveBit)

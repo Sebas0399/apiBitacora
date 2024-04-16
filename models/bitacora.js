@@ -7,7 +7,6 @@ const bitacoraSchema = new mongose.Schema({
     },
     cliente: {
         type: String,
-        unique: true,
         required: true
     }
 })
