@@ -23,6 +23,8 @@ mongose.connect("mongodb+srv://sebas:S8SqVZfVZUJlJOZx@cluster0.yjcnpdr.mongodb.n
 app.listen(port, () => {
     console.log("server is running")
 })
+app.get("/", (req, res) => res.send("Express on Vercel"));
+
 const Bitacora=require("./models/bitacora")
 app.get("/bitacoras",async(req,res)=>{
     try{
