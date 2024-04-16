@@ -29,7 +29,7 @@ const Bitacora=require("./models/bitacora")
 app.get("/bitacoras",async(req,res)=>{
     try{
         const existingBitacora=await Bitacora.find()
-        res.send(existingBitacora)
+        res.json(existingBitacora)
     }
     catch{
 
@@ -43,7 +43,7 @@ app.post("/bitacoras",async(req,res)=>{
         })
         await saveBit.save()
       
-        res.send(saveBit)
+        res.json(saveBit)
     }
     catch{
 
