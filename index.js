@@ -46,20 +46,28 @@ const generateNumBitacora = async () => {
     const bi =await Bitacora.find({}).sort({_id: -1}).limit(1)
     return parseInt(bi[0].nroBitacora)+1
 }
+const getFechaActual=()=>{
+    const fecha=new Date()
+    
+}
 app.post("/bitacoras", async (req, res) => {
     try {
-        const { cliente } = req.body
+        const { cliente,operacion } = req.body
+        console.log(req.body)
         const saveBit = new Bitacora({
             nroBitacora: await generateNumBitacora(),
-            cliente: cliente
+            cliente: cliente,
+            fechaTramite:new Date().setUTCHours(new Date().getUTCHours()-5),
+            operacion:operacion,
+            status:"PENDIENTE"
         })
         console.log(saveBit)
         await saveBit.save()
 
         res.json(saveBit)
     }
-    catch {
-
+    catch(err) {
+        console.log(err)
     }
 })
 module.exports = app;
